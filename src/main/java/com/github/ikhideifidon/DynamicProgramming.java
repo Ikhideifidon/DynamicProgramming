@@ -12,7 +12,7 @@ public class DynamicProgramming {
         result[1] = 1;
         result[2] = 2;
         for (int i = 3; i <= n; i ++) {
-            result[i] = result[i - 1] + result[i - 1];
+            result[i] = result[i - 1] + result[i - 2];
         }
         return result[n];
     }
@@ -433,11 +433,11 @@ public class DynamicProgramming {
 
     // allConstruct
     // Top-Down Recursion without Memoization
-    // Time Complexity: O(n ^ m * m)
-    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Time Complexity: O(n ^ m)
+    // Space Complexity: O(m) This is because in each of the stack depth, an array is continuously stored.
     // Where m = s.length() and n = length of the given array.
 
-    public static List<List<String>> allConstruct(String s, List<String> wordDict) {
+    public static List<List<String>> allConstructBruteForce(String s, List<String> wordDict) {
         if (s.isEmpty())
             return new ArrayList<>(List.of(new ArrayList<>()));
 
@@ -447,7 +447,7 @@ public class DynamicProgramming {
             if (s.indexOf(word) == 0) {
                 String suffix = s.substring(word.length());
 
-                List<List<String>> suffixWays = allConstruct(suffix, wordDict);
+                List<List<String>> suffixWays = allConstructBruteForce(suffix, wordDict);
                 List<List<String>> targetWays = new ArrayList<>();
 
                 for (List<String> suffixWay : suffixWays) {
@@ -462,6 +462,45 @@ public class DynamicProgramming {
             }
         }
         return result;
+    }
+
+    // Top-Down Recursion with Memoization
+    // Time Complexity: O(n * m)
+    // Space Complexity: O(m) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = s.length() and n = length of the given array.
+    private static List<List<String>> allConstruct(String s, List<String> wordDict, Map<String, List<List<String>>> memo) {
+        if (memo.containsKey(s))
+            return memo.get(s);
+
+        if (s.isEmpty())
+            return new ArrayList<>(List.of(new ArrayList<>()));
+
+        List<List<String>> result = new ArrayList<>();
+
+        for (String word : wordDict) {
+            if (s.indexOf(word) == 0) {
+                String suffix = s.substring(word.length());
+
+                List<List<String>> suffixWays = allConstruct(suffix, wordDict, memo);
+                List<List<String>> targetWays = new ArrayList<>();
+
+                for (List<String> suffixWay : suffixWays) {
+                    List<String> temp = new ArrayList<>(suffixWay);
+                    temp.add(0, word);              // Insert at the beginning.
+                    targetWays.add(temp);
+                }
+
+                for (List<String> targetWay : targetWays) {
+                    result.add(new ArrayList<>(targetWay));
+                }
+            }
+        }
+        memo.put(s, result);
+        return result;
+    }
+
+    public static List<List<String>> allConstructMemoized(String s, List<String> wordDict) {
+        return allConstruct(s, wordDict, new HashMap<>());
     }
 
 
