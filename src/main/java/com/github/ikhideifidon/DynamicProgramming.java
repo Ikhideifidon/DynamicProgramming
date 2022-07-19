@@ -1,9 +1,6 @@
 package com.github.ikhideifidon;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DynamicProgramming {
 
@@ -219,7 +216,12 @@ public class DynamicProgramming {
 
 
     // How Sum Problem
-    public static List<Integer> howSum(int[] nums, int targetSum) {
+    // Top-Down Recursion without Memoization
+    // Time Complexity: O((n ^ m) * m) which is O(m * n^m)
+    // Space Complexity: O(m)
+    // Where m = targetSum and n = length of the given array.
+
+    public static List<Integer> howSumBruteForce(int[] nums, int targetSum) {
         // if (targetSum < minimum in nums)
         //    return null;
         if (targetSum < 0)
@@ -227,19 +229,240 @@ public class DynamicProgramming {
         if (targetSum == 0)
             return new ArrayList<>();
 
+        List<Integer> result;
         for (int num : nums) {
             int remainder = targetSum - num;
-            List<Integer> result;
-            result = howSum(nums, remainder);
-            if (result != null)
+            result = howSumBruteForce(nums, remainder);
+            if (result != null) {
                 result.add(num);
-            return result;
-
-
+                return result;
+            }
         }
         return null;
     }
 
+    // How Sum Problem
+    // Top-Down Recursion with Memoization using HashMap
+    // Time Complexity: O(n * m * m)
+    // Space Complexity: O(m^2)
+    // Where m = targetSum and n = length of the given array.
+
+    private static List<Integer> howSum(int[] nums, int targetSum, Map<Integer, List<Integer>> memo) {
+        if (memo.containsKey(targetSum))
+            return memo.get(targetSum);
+
+        if (targetSum < 0)
+            return null;
+
+        if (targetSum == 0)
+            return new ArrayList<>();
+
+        List<Integer> result;
+        for (int num : nums) {
+            int remainder = targetSum - num;
+            result = howSum(nums, remainder, memo);
+            if (result != null) {
+                result.add(num);
+                memo.put(targetSum, result);
+                return memo.get(targetSum);
+            }
+        }
+        memo.put(targetSum, null);
+        return null;
+    }
+
+    public static List<Integer> howSumMemoized(int[] nums, int targetSum) {
+        return howSum(nums, targetSum, new HashMap<>());
+    }
+
+    // bestSum
+    // Top-Down Recursion without Memoization
+    // Time Complexity: O(n ^ m * m)
+    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = targetSum and n = length of the given array.
+    public static List<Integer> bestSumBruteForce(int[] nums, int targetSum) {
+        // if (targetSum < minimum in nums)
+        //    return null;
+        if (targetSum < 0)
+            return null;
+        if (targetSum == 0)
+            return new ArrayList<>();
+
+        List<Integer> result;
+        List<Integer> shortestCombination = null;
+        for (int num : nums) {
+            int remainder = targetSum - num;
+            result = bestSumBruteForce(nums, remainder);
+            if (result != null) {
+                List<Integer> combination = new ArrayList<>(result);
+                combination.add(num);
+                if (shortestCombination == null || combination.size() < shortestCombination.size())
+                    shortestCombination = combination;
+            }
+        }
+        return shortestCombination;                // Exhaustive search
+    }
+
+    // bestSum
+    // Top-Down Recursion with Memoization using HashMap
+    // Time Complexity: O(m^2 * n)
+    // Space Complexity: O(m^2)
+    // Where m = targetSum and n = length of the given array.
+    private static List<Integer> bestSum(int[] nums, int targetSum, Map<Integer, List<Integer>> memo)  {
+        if (memo.containsKey(targetSum))
+            return memo.get(targetSum);
+
+        if (targetSum < 0)
+            return null;
+        if (targetSum == 0)
+            return new ArrayList<>();
+
+        List<Integer> result;
+        List<Integer> shortestCombination = null;
+        for (int num : nums) {
+            int remainder = targetSum - num;
+            result = bestSum(nums, remainder, memo);
+            if (result != null) {
+                List<Integer> combination = new ArrayList<>(result);
+                combination.add(num);
+                if (shortestCombination == null || combination.size() < shortestCombination.size())
+                    shortestCombination = combination;
+            }
+
+        }
+        memo.put(targetSum, shortestCombination);
+        return shortestCombination;                // Exhaustive search
+    }
+
+    public static List<Integer> bestSumMemoized(int[] nums, int targetSum) {
+        return bestSum(nums, targetSum, new HashMap<>());
+    }
+
+    // canConstruct
+    // Top-Down Recursion without Memoization
+    // Time Complexity: O(n ^ m * m)
+    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = s.length() and n = length of the given array.
+    public static boolean wordBreakBruteForce(String s, List<String> wordDict) {
+        if (s.isEmpty())
+            return true;
+        for (String word : wordDict) {
+            if (s.indexOf(word) == 0) {             // Check if the word in wordBreak is a prefix.
+                String suffix = s.substring(word.length());
+                if (wordBreakBruteForce(suffix, wordDict))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
+    // canConstruct
+    // Top-Down Recursion with Memoization
+    // Time Complexity: O(n * m^2)
+    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = s.length() and n = length of the given array.
+    private static boolean wordBreak(String s, List<String> wordDict, Map<String, Boolean> memo) {
+        if (memo.containsKey(s))
+            return memo.get(s);
+
+        if (s.isEmpty())
+            return true;
+        for (String word : wordDict) {
+            if (s.indexOf(word) == 0) {             // Check if the word in wordBreak is a prefix.
+                String suffix = s.substring(word.length());
+                if (wordBreak(suffix, wordDict, memo)) {
+                    memo.put(s, true);
+                    return true;
+                }
+            }
+        }
+        memo.put(s, false);
+        return false;
+    }
+
+    public static boolean wordBreakMemoized(String s, List<String> wordDict) {
+        return wordBreak(s, wordDict, new HashMap<>());
+    }
+
+    // countConstruct
+    // Top-Down Recursion without Memoization
+    // Time Complexity: O(n ^ m * m)
+    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = s.length() and n = length of the given array.
+    public static int countConstructBruteForce(String s, List<String> wordDict) {
+        // countConstruct("abcdef", {"ab", "abc", "cd", "abcdef", "def", "abcd"});
+        if (s.isEmpty())
+            return 1;
+
+        int count = 0;
+        for (String word : wordDict) {
+            if (s.indexOf(word) == 0) {
+                String suffix = s.substring(word.length());
+                count += countConstructBruteForce(suffix, wordDict);
+            }
+        }
+        return count;
+    }
+
+    // Top-Down Recursion with Memoization
+    // Time Complexity: O(n * m^2)
+    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = s.length() and n = length of the given array.
+    private static int countConstruct(String s, List<String> wordDict, Map<String, Integer> memo) {
+        if (memo.containsKey(s))
+            return memo.get(s);
+
+        if (s.isEmpty())
+            return 1;
+
+        int count = 0;
+        for (String word : wordDict) {
+            if (s.indexOf(word) == 0) {
+                String suffix = s.substring(word.length());
+                count += countConstruct(suffix, wordDict, memo);
+            }
+        }
+        memo.put(s, count);
+        return count;
+    }
+
+    public static int countConstructMemoized(String s, List<String> wordDict) {
+        return countConstruct(s, wordDict, new HashMap<>());
+    }
+
+    // allConstruct
+    // Top-Down Recursion without Memoization
+    // Time Complexity: O(n ^ m * m)
+    // Space Complexity: O(m^2) This is because in each of the stack depth, an array is continuously stored.
+    // Where m = s.length() and n = length of the given array.
+
+    public static List<List<String>> allConstruct(String s, List<String> wordDict) {
+        if (s.isEmpty())
+            return new ArrayList<>(List.of(new ArrayList<>()));
+
+        List<List<String>> result = new ArrayList<>();
+
+        for (String word : wordDict) {
+            if (s.indexOf(word) == 0) {
+                String suffix = s.substring(word.length());
+
+                List<List<String>> suffixWays = allConstruct(suffix, wordDict);
+                List<List<String>> targetWays = new ArrayList<>();
+
+                for (List<String> suffixWay : suffixWays) {
+                    List<String> temp = new ArrayList<>(suffixWay);
+                    temp.add(0, word);              // Insert at the beginning.
+                    targetWays.add(temp);
+                }
+
+                for (List<String> targetWay : targetWays) {
+                    result.add(new ArrayList<>(targetWay));
+                }
+            }
+        }
+        return result;
+    }
 
 
 }
