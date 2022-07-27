@@ -2,6 +2,7 @@ package com.github.ikhideifidon;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -112,5 +113,24 @@ public class DynamicProgrammingTabulation {
             }
         }
         return bestSumTable.get(target);
+    }
+
+    // canConstruct
+    public static boolean canConstructTabulation(String target, String[] wordDict) {
+        boolean[] table = new boolean[target.length() + 1];
+        table[0] = true;
+
+        for (int i = 0; i <= target.length(); i++) {
+            if (table[i]) {
+                for (String word : wordDict) {
+                    String suffix = target.substring(i);
+                    if (suffix.indexOf(word) == 0) {
+                        table[i + word.length()] = true;
+                    }
+                }
+            }
+        }
+        System.out.println(Arrays.toString(table ));
+        return table[target.length()];
     }
 }
