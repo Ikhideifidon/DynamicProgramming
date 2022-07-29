@@ -61,6 +61,9 @@ public class Main {
         System.out.println(longestIncreasingSubsequenceBottomUp(new int[]{1, 2, 4, 3}));
         System.out.println(minimumTotal(List.of(List.of(2), List.of(3, 4), List.of(6, 5, 7), List.of(4, 1, 8, 3))));
         System.out.println(minimumTotalMemoized(List.of(List.of(2), List.of(3, 4), List.of(6, 5, 7), List.of(4, 1, 8, 3))));
-        System.out.println(minPathSum(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
+        System.out.println(minPathSumTopDown(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
+        System.out.println(minimumPathSumBottomUp(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
+        System.out.println(calculateMinimumHPBruteForce(new int[][]{{-2, -3, 3}, {-5, -10, 1}, {10, 30, -3}}));
+        System.out.println(calculateMinimumHPMemoized(new int[][]{{-2,-3,3,-5,-10}}));
     }
 }

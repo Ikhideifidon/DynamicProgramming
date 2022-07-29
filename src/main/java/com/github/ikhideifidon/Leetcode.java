@@ -163,6 +163,7 @@ public class Leetcode {
         return dp[0];
     }
 
+    // Triangle
     // Top-Down
     // Note: 2d array can be used in the place of Map
     private static int minimumTotalTopDown(List<List<Integer>> triangle, int row, int column, Map<String, Integer> memo) {
@@ -183,11 +184,12 @@ public class Leetcode {
     }
 
     // Minimum Path Sum
+    // Top-Down
     private static int minimumPathSum(int[][] grid, int row, int column, int[][]memo) {
         int m = grid.length;
         int n = grid[0].length;
         if (row >= m && column >= n)
-            return 0;
+            return 0;                       // Since our given values are non-negative.
 
         else if (row == m - 1 && column == n - 1) {
             memo[row][column] = grid[row][column];
@@ -210,8 +212,99 @@ public class Leetcode {
             return memo[row][column] = Math.min(minimumPathSum(grid, row + 1, column, memo), minimumPathSum(grid, row, column + 1, memo)) + grid[row][column];
     }
 
-    public static int minPathSum(int[][] grid) {
+    public static int minPathSumTopDown(int[][] grid) {
         return minimumPathSum(grid, 0, 0, new int[grid.length][grid[0].length]);
     }
+
+
+    // Bottom-Up
+    // Constant Extra Space.
+    public static int minimumPathSumBottomUp(int[][] grid) {
+        int m = grid.length;                // rows
+        int n = grid[0].length;             // columns
+
+        for (int i = 1; i < m; i++)
+            grid[i][0] += grid[i - 1][0];
+
+        for(int j = 1; j < n; j++)
+            grid[0][j] += grid[0][j - 1];
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
+            }
+        }
+        return grid[m - 1][n - 1];
+    }
+
+    // Dungeon Game
+    // Recursion without Memoization (Top-Down).
+    private static int calculateMinimumHP(int[][] dungeon, int row, int col) {
+        int m = dungeon.length - 1;
+        int n = dungeon[0].length - 1;
+
+        if (row > m || col > n) {                 // Out of bounds
+            return Integer.MAX_VALUE;
+        }
+
+        if (row == m && col == n)                 // We have reached our destination.
+            return dungeon[row][col] <= 0 ? -dungeon[row][col] + 1 : 1;
+
+        // Try all possible paths to reach destination.
+        int rightward = calculateMinimumHP(dungeon, row, col + 1);
+        int downward = calculateMinimumHP(dungeon, row + 1, col);
+
+        // Minimum of either values and the cost of the current cell
+        int minimumHealthRequired = Math.min(rightward, downward) - dungeon[row][col];
+        return minimumHealthRequired <= 0 ? 1 : minimumHealthRequired;
+    }
+
+    public static int calculateMinimumHPBruteForce(int[][] dungeon) {
+        int row = 0;
+        int col = 0;
+        return calculateMinimumHP(dungeon, row, col);
+    }
+
+
+    // Dungeon Game
+    // Recursion with Memoization (Top-Down).
+    public static int calculateMinimumHPMemoized(int[][] dungeon) {
+        int m = dungeon.length;
+        int n = dungeon[0].length;
+        int[][] memo = new int[m][n];
+
+        for (int[] array : memo)
+            Arrays.fill(array, Integer.MAX_VALUE);
+
+        return helper(dungeon, 0, 0, memo);
+    }
+
+    private static int helper(int[][] dungeon, int row, int col, int[][] memo) {
+        int m = dungeon.length - 1;
+        int n = dungeon[0].length - 1;
+
+        if (row > m || col > n) {                 // Out of bounds
+            return Integer.MAX_VALUE;
+        }
+
+        if (row == m && col == n)                 // We have reached our destination.
+            return memo[row][col] = dungeon[row][col] <= 0 ? -dungeon[row][col] + 1 : 1;
+
+        if (memo[row][col] != Integer.MAX_VALUE)
+            return memo[row][col];
+
+        // Try all possible paths to reach destination.
+        int rightward = helper(dungeon, row, col + 1, memo);
+        int downward = helper(dungeon, row + 1, col, memo);
+
+        // Minimum of either values and the cost of the current cell
+        int minimumHealthRequired = Math.min(rightward, downward) - dungeon[row][col];
+        return memo[row][col] = minimumHealthRequired <= 0 ? 1 : minimumHealthRequired;
+    }
+
+    // Dungeon Game
+    // Tabulation (Bottom-Up).
+
+
 
 }
