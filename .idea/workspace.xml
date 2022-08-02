@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d068525f-ad68-41b3-b4d3-94725f2993ae" name="Changes" comment="Dynamic Programming Leetcode">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/BottomUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Leetcode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Leetcode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Main.java" afterDir="false" />
@@ -96,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658941144291</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Dynamic Programming Leetcode">
+      <created>1659100366689</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659100366689</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -115,5 +123,12 @@
     <MESSAGE value="Dynamic Programming" />
     <MESSAGE value="Dynamic Programming Leetcode" />
     <option name="LAST_COMMIT_MESSAGE" value="Dynamic Programming Leetcode" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="strs" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

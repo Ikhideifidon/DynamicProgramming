@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.github.ikhideifidon.BottomUp.*;
+import static com.github.ikhideifidon.BottomUp.maximalSquareTabulation;
 import static com.github.ikhideifidon.DynamicProgramming.*;
 import static com.github.ikhideifidon.DynamicProgrammingTabulation.*;
 import static com.github.ikhideifidon.Leetcode.*;
@@ -65,5 +67,30 @@ public class Main {
         System.out.println(minimumPathSumBottomUp(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
         System.out.println(calculateMinimumHPBruteForce(new int[][]{{-2, -3, 3}, {-5, -10, 1}, {10, 30, -3}}));
         System.out.println(calculateMinimumHPMemoized(new int[][]{{-2,-3,3,-5,-10}}));
+        char[][] square = new char[][]{
+                {'1', '0', '1', '1', '1'},
+                {'1', '0', '1', '1', '1'},
+                {'1', '1', '1', '1', '1'},
+                {'1', '0', '0', '1', '0'}};
+
+        int[][] square2 = new int[][]{
+                {1, 0, 1, 1, 1},
+                {1, 0, 1, 1, 1},
+                {1, 1, 1, 1, 1},
+                {1, 0, 0, 1, 0}};
+        System.out.println(maximalSquare(square));
+        System.out.println(maximalSquareMemoized(square));
+
+
+        // BottomUp
+        System.out.println(maximalSquareTabulation(square));
+        System.out.println(numSquare(50));
+        System.out.println(numSquareMemoized(66));
+        System.out.println(numSquareTabulation(30976 + 66));
+        System.out.println(minCoinChange(new int[] {2}, 11));
+        System.out.println(minCoinChangeMemoized(new int[]{1, 2, 5}, 11));
+        System.out.println(findMaxFormBruteForce(new String[] {"10", "0001", "111001", "1", "0"}, 5, 3));
+        System.out.println(findMaxFormMemoized(new String[] {"10", "0001", "111001", "1", "0"}, 5, 3));
+        System.out.println(findMaxFormTabulation(new String[] {"10", "0001", "111001", "1", "0"}, 5, 3));
     }
 }

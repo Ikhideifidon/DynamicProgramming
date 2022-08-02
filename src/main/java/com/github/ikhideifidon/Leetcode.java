@@ -306,5 +306,222 @@ public class Leetcode {
     // Tabulation (Bottom-Up).
 
 
+    // Maximal Square
+    // Top-Down Without Memoization
+    private static int helper(char[][] matrix, int row, int col) {
+        int m = matrix.length - 1;
+        int n = matrix[0].length - 1;
+
+        // [0][0] ----> [m][n]
+        if (row > m || col > n)
+            return 0;
+
+        int rightward = helper(matrix, row, col + 1);
+        int downward = helper(matrix, row + 1, col);
+        int diagonally = helper(matrix, row + 1, col + 1);
+
+        if (matrix[row][col] == '1')
+            return Math.min(rightward, Math.min(downward, diagonally)) + 1;
+        return 0;
+    }
+
+    public static int maximalSquare(char[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int size;
+        int maxArea = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '1') {
+                    size = helper(matrix, i, j);
+                    maxArea = Math.max(maxArea, size);
+                }
+            }
+        }
+        return maxArea * maxArea;
+    }
+
+    // Maximal Square
+    // Top-Down With Memoization
+    private static int helper(char[][] matrix, int row, int col, int[][] memo) {
+        int m = matrix.length - 1;
+        int n = matrix[0].length - 1;
+
+        // [0][0] ----> [m][n]
+        if (row > m || col > n)
+            return 0;
+
+        if (memo[row][col] != 0)
+            return memo[row][col];
+
+        int rightward = helper(matrix, row, col + 1, memo);
+        int downward = helper(matrix, row + 1, col, memo);
+        int diagonally = helper(matrix, row + 1, col + 1, memo);
+
+        if (matrix[row][col] == '1')
+            memo[row][col] = Math.min(rightward, Math.min(downward, diagonally)) + 1;
+        return memo[row][col];
+    }
+
+    public static int maximalSquareMemoized(char[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int[][] memo = new int[m][n];
+
+        int size;
+        int maxArea = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == '1') {
+                    size = helper(matrix, i, j, memo);
+                    maxArea = Math.max(maxArea, size);
+                }
+            }
+        }
+        return maxArea * maxArea;
+    }
+
+    // Perfect Square
+    // Without Memoization
+    public static int numSquare(int n) {
+        if (n == 0) return 0;
+        if (n < 0) return -1;
+
+        int minLength = Integer.MAX_VALUE;
+        for (int i = 1; i <= n; i++) {
+            if (i * i <= n) {
+                int result = numSquare(n - (i * i));
+                if (result >= 0 && result < minLength)
+                    minLength = 1 + result;
+            }
+        }
+        return minLength;
+    }
+
+    // Perfect Square
+    // With Memoization
+    private static int helper(int n, int[] memo) {
+        if (n == 0) return 0;
+        if (n < 0) return -1;
+
+        if (memo[n] != 0)
+            return memo[n];
+
+        int minLength = Integer.MAX_VALUE;
+        for (int i = 1; i <= n; i++) {
+            if (i * i <= n) {
+                int result = helper(n - (i * i), memo);
+                if (result >= 0 && result < minLength)
+                    minLength = 1 + result;
+            }
+        }
+        return memo[n] = minLength;
+    }
+
+    public static int numSquareMemoized(int n) {
+        return helper(n, new int[n + 1]);
+    }
+    // Coin Change
+    // Without Memoization
+    public static int minCoinChange(int[] coins, int amount) {
+
+        // Exit conditions
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+
+        int minLength = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int remainder = amount - coin;
+            int result = minCoinChange(coins, remainder);
+            if (result >= 0 && result < minLength)
+                minLength = 1 + result;
+        }
+        return minLength != Integer.MAX_VALUE ? minLength : -1;
+    }
+
+    // Coin Change
+    // With Memoization
+    private static int helper(int[] coins, int amount, int[] memo) {
+
+        // Exit conditions
+        if (amount == 0) return memo[amount] = 0;
+        if (amount < 0) return -1;
+
+        if (memo[amount] != 0)
+            return memo[amount];
+
+        int minLength = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int remainder = amount - coin;
+            int result = helper(coins, remainder, memo);
+            if (result >= 0 && result < minLength)
+                minLength = 1 + result;
+        }
+        memo[amount] = minLength;
+        return minLength != Integer.MAX_VALUE ? minLength : -1;
+    }
+
+    public static int minCoinChangeMemoized(int[] coins, int amount) {
+        return helper(coins, amount, new int[amount + 1]);
+    }
+
+    // Ones and Zeroes
+    // Top-Down Without Memoization
+    private static int helper(String[] strs, int m, int n, int index ) {
+        int l = strs.length;
+
+        // Base conditions
+        if (m < 0 || n < 0) return -1;              // this means such a string is not a candidate
+        if (index == l) return 0;                   // Such a string is a candidate
+
+        int nZeros = 0;
+        int nOnes = 0;
+        for (int i = 0; i < strs[index].length(); i++) {
+            if (strs[index].charAt(i) == '1')
+                nOnes++;
+            else nZeros++;
+        }
+
+        int include = 1 + helper(strs, m - nZeros, n - nOnes, index + 1);
+        int exclude = helper(strs, m, n, index + 1);
+        return Math.max(include, exclude);
+    }
+
+    public static int findMaxFormBruteForce(String[] strs, int m, int n) {
+        int index = 0;
+        return helper(strs, m, n, index);
+    }
+
+    // Ones and Zeroes
+    // Top-Down With Memoization
+    private static int helper(String[] strs, int m, int n, int index, int[][][] memo) {
+        int l = strs.length;
+
+        // Base conditions
+        if (m < 0 || n < 0) return -1;              // this means such a string is not a candidate
+        if (index == l) return 0;                   // Such a string is a candidate
+
+        if (memo[m][n][index] != 0)                 // Memoized
+            return memo[m][n][index];
+
+        int nZeros = 0;
+        int nOnes = 0;
+        for (int i = 0; i < strs[index].length(); i++) {
+            if (strs[index].charAt(i) == '1')
+                nOnes++;
+            else nZeros++;
+        }
+
+        int include = 1 + helper(strs, m - nZeros, n - nOnes, index + 1, memo);
+        int exclude = helper(strs, m, n, index + 1, memo);
+        return memo[m][n][index] = Math.max(include, exclude);
+    }
+
+    public static int findMaxFormMemoized(String[] strs, int m, int n) {
+        int index = 0;
+        int[][][] memo = new int[m + 1][n + 1][strs.length + 1];
+        return helper(strs, m, n, index, memo);
+    }
 
 }
