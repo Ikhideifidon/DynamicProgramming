@@ -524,4 +524,99 @@ public class Leetcode {
         return helper(strs, m, n, index, memo);
     }
 
+    // 2 Keys Keyboard
+    // Recursion Without Memoization
+    private static int helper(int n, int current, int afterLastCopy) {
+        if (current > n)
+            return 1_000_000;                    // Since n cannot exceed 1000
+
+        if (current == n)
+            return 0;
+
+        int copy = 2 + helper(n, current + current, current);
+        int paste = 1 + helper(n, current + afterLastCopy, afterLastCopy);
+
+        return Math.min(copy, paste);
+    }
+
+    public static int minSteps(int n) {
+        return n > 1 ? helper(n, 1, 1) + 1 : 0;
+    }
+
+    // 2 Keys Keyboard
+    // Recursion With Memoization
+    private static int helper(int n, int current, int afterLastCopy, int[][] memo) {
+        if (current > n)
+            return 1_000_000;                    // Since n cannot exceed 1000
+
+        if (current == n)
+            return 0;
+
+        if (memo[current][afterLastCopy] != 0)
+            return memo[current][afterLastCopy];
+
+        int copy = 2 + helper(n, current + current, current, memo);
+        int paste = 1 + helper(n, current + afterLastCopy, afterLastCopy, memo);
+
+        return memo[current][afterLastCopy] = Math.min(copy, paste);
+    }
+
+    public static int minStepsMemoized(int n) {
+        return n > 1 ? helper(n, 1, 1, new int[n + 1][n + 1]) + 1 : 0;
+    }
+
+    // Minimum Cost of Climbing Stairs
+    // Recursion Without Memoization
+    // Time Complexity: O(2^n)
+    // Space Complexity: O(n)
+    private static int helper(int[] cost, int index) {
+        int n = cost.length;
+        if (n <= 1)
+            return n == 0 ? 0 : cost[0];
+
+        if (index < 0)
+            return 0;
+
+        if (index == 0)
+            return cost[index];
+
+        int oneStep = helper(cost, index - 1);
+        int twoSteps = helper(cost, index - 2);
+        return Math.min(oneStep, twoSteps) + cost[index];
+    }
+
+    public static int minCostClimbingStairsBruteForce(int[] cost) {
+        int n = cost.length;
+        return Math.min(helper(cost, n - 1), helper(cost, n - 2));
+    }
+
+    // Minimum Cost of Climbing Stairs
+    // Recursion With Memoization
+    // Time Complexity: O(n)
+    // Space Complexity: O(n)
+    private static int helper1(int[] cost, int index, int[] memo) {
+        int n = cost.length;
+        if (n <= 1)
+            return n == 0 ? 0 : cost[0];
+
+        if (index < 0)
+            return 0;
+
+        if (index == 0)
+            return cost[index];
+
+        if (memo[index] != 0)
+            return memo[index];
+
+        int oneStep = helper1(cost, index - 1, memo);
+        int twoSteps = helper1(cost, index - 2, memo);
+        return memo[index] = Math.min(oneStep, twoSteps) + cost[index];
+    }
+
+    public static int minCostClimbingStairsMemoized(int[] cost) {
+        int n = cost.length;
+        int[] memo = new int[n + 1];
+        return Math.min(helper1(cost, n - 1, memo), helper1(cost, n - 2, memo));
+    }
+
 }

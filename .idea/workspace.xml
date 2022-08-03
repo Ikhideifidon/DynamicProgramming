@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d068525f-ad68-41b3-b4d3-94725f2993ae" name="Changes" comment="Dynamic Programming Leetcode">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/BottomUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/BottomUp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/BottomUp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Leetcode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Leetcode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/Main.java" afterDir="false" />
     </list>

@@ -83,5 +83,57 @@ public class BottomUp {
         return dp[m][n];
     }
 
+    // 2 Keys Keyboard
+    // Math
+    // Time Complexity: O(N^1/2)
+    // Space Complexity: O(1)
+    public static int minStepsMaths(int n) {
+        int result = 0;
+        for (int i = 2; i <= n; i++) {
+            while (n % i == 0) {
+                result += i;
+                n /= i;
+            }
+        }
+        return result;
+    }
+
+    // Minimum Cost Climbing Stairs
+    // Time Complexity: O(n)
+    // Space Complexity: O(n)
+    public static int minCostClimbingStairsTabulation(int[] cost) {
+        int n = cost.length;
+        if (n <= 1)
+            return n == 0 ? 0 : cost[0];
+
+        int[] dp = new int[n + 1];
+        for (int i = 2; i <= n; i++) {
+            int oneStep = dp[i - 1] + cost[i - 1];
+            int twoSteps = dp[i - 2] + cost[i -2];
+            dp[i] = Math.min(oneStep, twoSteps);
+        }
+        System.out.println(Arrays.toString(dp));
+        return dp[n];
+    }
+
+    // Minimum Cost Climbing Stairs
+    // Time Complexity: O(n)
+    // Space Complexity: O(1)
+    public static int minCostClimbingStairsConstantSpace(int[] cost) {
+        int n = cost.length;
+        if (n <= 1)
+            return n == 0 ? 0 : cost[0];
+
+        int first = cost[0];
+        int second = cost[1];
+
+        for (int i = 2; i < n; i++) {
+            int current = cost[i] + Math.min(first, second);
+            first = second;
+            second = current;
+        }
+        return Math.min(first, second);
+    }
+
 
 }

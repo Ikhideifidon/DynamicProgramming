@@ -92,5 +92,11 @@ public class Main {
         System.out.println(findMaxFormBruteForce(new String[] {"10", "0001", "111001", "1", "0"}, 5, 3));
         System.out.println(findMaxFormMemoized(new String[] {"10", "0001", "111001", "1", "0"}, 5, 3));
         System.out.println(findMaxFormTabulation(new String[] {"10", "0001", "111001", "1", "0"}, 5, 3));
+        System.out.println(minSteps(1210));
+        System.out.println(minStepsMemoized(1210));
+        System.out.println(minCostClimbingStairsBruteForce(new int[]{10, 15, 20}));
+        System.out.println(minCostClimbingStairsTabulation(new int[]{10, 15, 20}));
+        System.out.println(minCostClimbingStairsMemoized(new int[]{10, 5, 2, 8}));
+        System.out.println(minCostClimbingStairsConstantSpace(new int[]{10, 5, 2, 8}));
     }
 }
