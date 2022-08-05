@@ -619,4 +619,29 @@ public class Leetcode {
         return Math.min(helper1(cost, n - 1, memo), helper1(cost, n - 2, memo));
     }
 
+    private static int helper2(int[] cost, int index, int[] memo) {
+        int n = cost.length;
+        if (n <= 1)
+            return n == 0 ? 0 : cost[0];
+
+        if (index > n - 1)
+            return 0;
+
+        if (index == n - 1)
+            return cost[index];
+
+        if (memo[index] != 0)
+            return memo[index];
+
+        int oneStep = helper2(cost, index + 1, memo);
+        int twoSteps = helper2(cost, index + 2, memo);
+        return memo[index] = Math.min(oneStep, twoSteps) + cost[index];
+    }
+
+    public static int minCostClimbingStairsMemoized2(int[] cost) {
+        int n = cost.length;
+        int[] memo = new int[n + 1];
+        return Math.min(helper2(cost, 0, memo), helper2(cost, 1, memo));
+    }
+
 }

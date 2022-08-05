@@ -1,6 +1,7 @@
 package com.github.ikhideifidon;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class BottomUp {
     // Just some LeetCode Questions
@@ -135,5 +136,62 @@ public class BottomUp {
         return Math.min(first, second);
     }
 
+    // Minimum Number of Refueling Stops
+    // After careful analysis, it is obvious that the number of stops is solely dependent on the
+    // amount of fuel at each specified position. Hence, the larger the number of fuel at position i,
+    // the higher the distance the car is able to cover with a minimal stop(s). Therefore, the greedy
+    // algorithm is the best fit here.
+    // Let's go greedy!
+    public static int minRefuelStopsGreedyApproach(int target, int startFuel, int[][] stations) {
+        // target = 100, startFuel = 10, stations = [[10,60],[20,30],[30,30],[60,40]]
+        if (startFuel >= target)
+            return 0;
 
+        int n = stations.length;
+        int maxDistance = startFuel;
+        int stops = 0;
+        int currentStation = 0;
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> Integer.compare(o2, o1));
+
+        while (maxDistance < target) {
+            while (currentStation < n && maxDistance >= stations[currentStation][0]) {
+                queue.offer(stations[currentStation++][1]);
+            }
+
+            // Check if all stations[i][0] is actually reachable with the startFuel.
+            // Not reachable
+            if (queue.isEmpty())
+                return -1;
+
+            // Reachable
+            maxDistance += queue.poll();
+            stops++;
+        }
+        return stops;
+    }
+
+    // Minimum Number of Refueling Stops
+    // Recursion Without Memoization.
+    private static int helper(int currentFuel, int target, int start, int[][] stations) {
+        if (currentFuel >= target)
+            return 0;
+
+        if (start == stations.length)
+            return Integer.MAX_VALUE;
+
+        int distance = stations[start][0] + (start > 0 ? stations[start - 1][0] : 0);
+        int fuel = stations[start][1];
+        int taken = Integer.MAX_VALUE;
+        int notTaken = Integer.MAX_VALUE;
+        if ((currentFuel - distance) >= 0) {
+            taken = helper(currentFuel + fuel - distance, target - distance, start + 1, stations) + 1;
+            notTaken = helper(currentFuel - distance, target - distance, start + 1, stations);
+        }
+
+        return Math.min(taken, notTaken);
+    }
+
+    public static  int minRefuelStopsBruteForce(int target, int startFuel, int[][] stations) {
+        return helper(startFuel, target, 0, stations);
+    }
 }

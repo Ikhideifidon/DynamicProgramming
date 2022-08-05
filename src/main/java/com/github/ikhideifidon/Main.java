@@ -1,9 +1,6 @@
 package com.github.ikhideifidon;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.github.ikhideifidon.BottomUp.*;
 import static com.github.ikhideifidon.BottomUp.maximalSquareTabulation;
@@ -98,5 +95,9 @@ public class Main {
         System.out.println(minCostClimbingStairsTabulation(new int[]{10, 15, 20}));
         System.out.println(minCostClimbingStairsMemoized(new int[]{10, 5, 2, 8}));
         System.out.println(minCostClimbingStairsConstantSpace(new int[]{10, 5, 2, 8}));
+        System.out.println(minCostClimbingStairsMemoized2(new int[]{1, 100, 1, 1, 1, 100, 1, 1, 100, 1}));
+        System.out.println(Integer.compare(5, 2));
+        System.out.println(minRefuelStopsGreedyApproach(100, 10, new int[][] {{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
+        System.out.println(minRefuelStopsBruteForce(100, 10, new int[][] {{10, 60}, {20, 30}, {30, 30}}));
     }
 }
