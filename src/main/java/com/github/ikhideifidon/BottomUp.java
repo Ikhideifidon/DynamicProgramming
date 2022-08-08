@@ -1,6 +1,8 @@
 package com.github.ikhideifidon;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class BottomUp {
@@ -172,26 +174,71 @@ public class BottomUp {
 
     // Minimum Number of Refueling Stops
     // Recursion Without Memoization.
-    private static int helper(int currentFuel, int target, int start, int[][] stations) {
+    static int startTarget;
+    private static int helper(int target, int currentFuel, int start, int[][] stations, Map<String, Integer> memo) {
+        if (stations.length == 0)
+            return currentFuel < target ? -1 : 0;
+
+        if (stations[0][0] > currentFuel)
+            return -1;
+
+        String key = target + ", " + currentFuel;
+        if (memo.containsKey(key))
+            return memo.get(key);
+
         if (currentFuel >= target)
             return 0;
 
         if (start == stations.length)
             return Integer.MAX_VALUE;
 
-        int distance = stations[start][0] + (start > 0 ? stations[start - 1][0] : 0);
-        int fuel = stations[start][1];
-        int taken = Integer.MAX_VALUE;
-        int notTaken = Integer.MAX_VALUE;
-        if ((currentFuel - distance) >= 0) {
-            taken = helper(currentFuel + fuel - distance, target - distance, start + 1, stations) + 1;
-            notTaken = helper(currentFuel - distance, target - distance, start + 1, stations);
-        }
 
-        return Math.min(taken, notTaken);
+        int stops = Integer.MAX_VALUE;
+        for (int i = start; i < stations.length; i++) {
+            int currentDistance = stations[i][0];
+            int initialDistance = startTarget - target;
+            int distance = currentDistance - initialDistance;
+            int fuel = stations[i][1];
+
+            if ((currentFuel - distance) >= 0)
+                stops = Math.min(stops, helper(target - distance, currentFuel + fuel - distance, start + 1, stations, memo) + 1);
+        }
+        memo.put(key, stops);
+//        System.out.println(memo.entrySet());
+        return memo.get(key);
     }
 
+//    private static int helper(int target, int currentFuel, int start, int[][] stations, Map<String, Integer> memo) {
+//        if (currentFuel >= target)
+//            return 1;
+//
+//        if (start == stations.length)
+//            return 0;
+//
+//        String key = target + ", " + currentFuel + ", " + start;
+//        if (memo.containsKey(key))
+//            return memo.get(key);
+//
+//        int taken = Integer.MAX_VALUE;
+//        int notTaken = Integer.MAX_VALUE;
+//        int currentDistance = stations[start][0];
+//        int initialDistance = startTarget - target;
+//        int distance = currentDistance - initialDistance;
+//        int fuel = stations[start][1];
+//
+//        if ((currentFuel - distance) >= 0) {
+//            taken = helper(target - distance, currentFuel + fuel - distance, start + 1, stations, memo) + 1;
+//            notTaken = helper(target - distance, currentFuel - distance, start + 1, stations, memo);
+//        }
+//        memo.put(key, Math.min(taken, notTaken));
+//        System.out.println(memo.entrySet());
+//        return memo.get(key);
+//    }
+
+
     public static  int minRefuelStopsBruteForce(int target, int startFuel, int[][] stations) {
-        return helper(startFuel, target, 0, stations);
+        startTarget = target;
+        int stops = helper(target, startFuel, 0, stations, new HashMap<>());
+        return stops != Integer.MAX_VALUE ? stops : -1;
     }
 }
