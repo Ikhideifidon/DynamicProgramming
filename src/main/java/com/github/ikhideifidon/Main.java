@@ -100,24 +100,6 @@ public class Main {
         System.out.println(minRefuelStopsGreedyApproach(120, 10, new int[][]{{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
         System.out.println("BruteForce");
         System.out.println(minRefuelStopsBruteForce(120, 10, new int[][]{{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
-        System.out.println(minRefuelStopsBruteForce(100, 35, new int[][]{{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
-        System.out.println(minRefuelStopsBruteForce(100, 11, new int[][]{{10, 80}}));
-
-        System.out.println("Greedy");
-        System.out.println(minRefuelStopsGreedyApproach(120, 10, new int[][]{{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
-        System.out.println(minRefuelStopsGreedyApproach(100, 35, new int[][]{{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
-        System.out.println(minRefuelStopsGreedyApproach(100, 11, new int[][]{{10, 80}}));
-////        System.out.println(minRefuelStopsGreedyApproach(1000000000, 96590732, new int[][]{{3463138, 171226670},{
-////                42514169, 871404},{45979689, 126681049},{80194728, 82824251},{113079470, 134585347},{186818655, 32057533},{
-////                246663592, 142661201},{251592812, 144809488},{268781525, 23309186},{381405819, 155048427},{391116368, 164796170},{
-////                433014492, 149057678},{433512702, 14527877},{446985018, 48126745},{476848695, 57439473},{525312691, 160081803},{
-////                526247424, 169647083},{537136657, 5212455},{564887288, 110158354},{603529372, 196239200},{667093430, 82142416},{
-////                682009873, 152653709},{819959710, 180003657},{877282592, 146414758},{926463574, 146211509}}));
-////
-        System.out.println(minRefuelStopsBruteForce(1000000000, 96590732, new int[][]{{3463138, 171226670},{
-                42514169, 871404},{45979689, 126681049},{80194728, 82824251},{113079470, 134585347},{186818655, 32057533},{
-                246663592, 142661201},{251592812, 144809488}}));
-
-        System.out.println(Integer.MIN_VALUE);
+        System.out.println(minFallingPathSum(new int[][] {{2,1}, {1, 5}}));
     }
 }

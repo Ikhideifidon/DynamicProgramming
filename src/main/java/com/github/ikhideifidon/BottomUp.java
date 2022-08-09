@@ -190,22 +190,25 @@ public class BottomUp {
             return 0;
 
         if (start == stations.length)
-            return Integer.MAX_VALUE;
+            return -1;
 
-
-        int stops = Integer.MAX_VALUE;
+        int min = Integer.MAX_VALUE;
         for (int i = start; i < stations.length; i++) {
             int currentDistance = stations[i][0];
             int initialDistance = startTarget - target;
             int distance = currentDistance - initialDistance;
             int fuel = stations[i][1];
 
-            if ((currentFuel - distance) >= 0)
-                stops = Math.min(stops, helper(target - distance, currentFuel + fuel - distance, start + 1, stations, memo) + 1);
+            if ((currentFuel - distance) >= 0) {
+                int result = helper(target - distance, currentFuel + fuel - distance, i + 1, stations, memo);
+                if (result >= 0 && result < min)
+                    min = 1 + result;
+            }
+
         }
-        memo.put(key, stops);
-//        System.out.println(memo.entrySet());
-        return memo.get(key);
+        min = (min == Integer.MAX_VALUE) ? -1 : min;
+        memo.put(key, min);
+        return min;
     }
 
 //    private static int helper(int target, int currentFuel, int start, int[][] stations, Map<String, Integer> memo) {
@@ -240,5 +243,38 @@ public class BottomUp {
         startTarget = target;
         int stops = helper(target, startFuel, 0, stations, new HashMap<>());
         return stops != Integer.MAX_VALUE ? stops : -1;
+    }
+
+    // Minimum Falling Path Sum
+    private static int help(int[][] matrix, int row, int col, int[][] memo) {
+        int n = matrix.length;
+
+        // Base cases
+        if (row < 0 || row >= n || col < 0 || col >= n)         // Out of Bounds
+            return Integer.MAX_VALUE;
+
+        if (row == n - 1)                                       // Destination reached
+            return matrix[row][col];
+
+        if (memo[row][col] != 0)                                // Memoized
+            return memo[row][col];
+
+        // All possible paths
+        int downward = help(matrix, row + 1, col, memo);
+        int leftDiagonal = help(matrix, row + 1, col - 1, memo);
+        int rightDiagonal = help(matrix, row + 1, col + 1, memo);
+
+        // Final choice
+        memo[row][col] = Math.min(downward, Math.min(leftDiagonal, rightDiagonal)) + matrix[row][col];
+        return memo[row][col];
+    }
+
+    public static int minFallingPathSum(final int[][] matrix) {
+        int n = matrix.length;
+        final int[][] memo = new int[n][n];
+        int minimumPathSum = Integer.MAX_VALUE;
+        for (int i = 0; i < n; i++)
+            minimumPathSum = Math.min(minimumPathSum, help(matrix, 0, i, memo));
+        return minimumPathSum;
     }
 }
