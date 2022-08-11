@@ -101,5 +101,6 @@ public class Main {
         System.out.println("BruteForce");
         System.out.println(minRefuelStopsBruteForce(120, 10, new int[][]{{10, 60}, {20, 30}, {30, 30}, {60, 40}}));
         System.out.println(minFallingPathSum(new int[][] {{2,1}, {1, 5}}));
+        System.out.println(lastStoneWeightII(new int[] {31, 26, 33, 21, 40}));
     }
 }

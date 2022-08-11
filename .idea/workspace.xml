@@ -124,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659978307030</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Dynamic Programming Leetcode">
+      <created>1660066243585</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1660066243585</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -143,21 +150,5 @@
     <MESSAGE value="Dynamic Programming" />
     <MESSAGE value="Dynamic Programming Leetcode" />
     <option name="LAST_COMMIT_MESSAGE" value="Dynamic Programming Leetcode" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/BottomUp.java</url>
-          <line>178</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/github/ikhideifidon/BottomUp.java</url>
-          <line>210</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

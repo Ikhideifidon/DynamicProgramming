@@ -277,4 +277,56 @@ public class BottomUp {
             minimumPathSum = Math.min(minimumPathSum, help(matrix, 0, i, memo));
         return minimumPathSum;
     }
+
+    // Last Stone Weight II
+    private static int help(int[] stones, int index, int weight1, int weight2, Map<String, Integer> memo) {
+        String key = index + ", " + weight1 + ", " + weight2;
+
+        // Base case
+        if (index == stones.length)
+            return Math.abs(weight1 - weight2);
+
+        if (memo.containsKey(key))
+            return memo.get(key);
+
+        int currentWeight = stones[index];
+        int weightOne = help(stones,index + 1, weight1 + currentWeight, weight2, memo);
+        int weightTwo = help(stones, index + 1, weight1, weight2 + currentWeight, memo);
+        int min = Math.min(weightOne, weightTwo);
+        memo.put(key, min);
+        return min;
+    }
+
+    public static int lastStoneWeightII(int[] stones) {
+        return help(stones, 0, 0, 0, new HashMap<>());
+    }
+
+    public static int minCostTickets(int[] days, int[] costs) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+        return help(days, costs, 0, 0, map);
+    }
+
+    private static int help(int[] days, int[] costs, int rem, int idx,
+                              Map<Integer, Integer> map){
+
+        if(idx >= days.length)
+            return 0;
+
+        int res = Integer.MAX_VALUE;
+
+        if(days[idx] < rem)
+            return help(days, costs, rem, idx+1, map);
+
+        if(map.containsKey(idx))
+            return map.get(idx);
+
+        res = Math.min(res, help(days, costs, days[idx] + 1, idx+1, map) + costs[0]);
+        res = Math.min(res, help(days, costs, days[idx] + 7, idx+1, map) + costs[1]);
+        res = Math.min(res, help(days, costs, days[idx] + 30, idx+1, map) + costs[2]);
+
+        map.put(idx, res);
+        return res;
+    }
+
 }
